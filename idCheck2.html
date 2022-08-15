@@ -21,7 +21,7 @@
 
         </style>
         <title>추가학습자료</title>
-        
+
     </head>
     <body>
         <div id="wrap">
@@ -48,7 +48,7 @@
                 submitId();
             });
             
-            //키보드 이벤트 엔터가 입력될 경우에 submitId 실행
+            // 키보드 이벤트 엔터가 입력될 경우에 submitId 실행
             idInput.addEventListener('keyup', () => {
 
                 //키보드 이벤트 엔터 조건문
@@ -57,7 +57,7 @@
                 } 
             });
 
-            //입력이 완성될 경우에 체크 실행
+            // 입력이 완성될 경우에 체크 실행
             const submitId = () => {
 
                 //입력된 값을 userId에 담아 둔다
@@ -137,27 +137,28 @@
                         //콘솔창에 찍어주기
                         console.log(i+1,validatorList[i].respMsg,true); 
                     }
-                    // 합치기
-                    respMsgsToText = respMsgs.join("")
-                    
-                    // 윈도우 창에 표현
-                    document.getElementById("rule").innerHTML = respMsgsToText;
-                    
-                    //실행이 된 후 커서를 일단 인풋 창으로 다시 보낸다
-                    idInput.focus();
                 }
-                //다 맞으면 원안대로, 한개라도 틀렸으면 "사용이 불가능한 아이디입니다"가 msgTxt에 찍혀 있을 것이고 이걸 표현해 준다.
+                // 합치기
+                respMsgsToText = respMsgs.join("")
+                    
+                // 윈도우 창에 표현
+                document.getElementById("rule").innerHTML = respMsgsToText;
+                    
+                // 실행이 된 후 커서를 일단 인풋 창으로 다시 보낸다
+                idInput.focus();
+                
+                // 다 맞으면 원안대로, 한개라도 틀렸으면 "사용이 불가능한 아이디입니다"가 msgTxt에 찍혀 있을 것이고 이걸 표현해 준다.
                 document.querySelector("p").innerHTML = msgTxt;
                 
                 return false;
             }
-            //모두 적합한 상태로 화면에 한번 뿌려준다
+            //모두 적합한 상태로 화면에 한번 뿌려준다. 초기화!
             checkUserId("afafafaf")
 
-            //콘솔창 깨끗하게
+            // 콘솔창 깨끗하게
             console.clear();
 
-            //답변부분을 깨끗하게
+            // 답변부분 깨끗하게
             document.querySelector("p").innerHTML =""
         </script>
     </body>
