@@ -80,11 +80,13 @@
                 console.clear();
                 //콘솔창에 아이디 적어준다.
                 console.log("idTyped :",userId);
+
                 //기본값은 다 적합한 경우로 정하기로...
                 let msgTxt= "사용가능한 아이디입니다.";
                 document.querySelector("p").style.color = "green";
                 document.querySelector("#rule").style.color = "green"; 
-                //정규식과 메시지를 입력, 정규식은 변수로 저장하기 까다로와서 여기 함수 내부에서 다루는 것으로...
+
+                //정규식과 메시지를 입력, 정규식은 독립된 변수로 따로 저장하기 까다로워서 여기 함수 내부에서 다루는 것으로...
                 const validatorList = [
                 
                     {
@@ -129,7 +131,7 @@
                     if(validatorList[i].validator) {
 
                     // 틀릴 경우
-                        //틀렸으니... id = red, 기준을 설명하는 문장, (조건 X)를 넣어준다.
+                        // id = red, 기준을 설명하는 문장, (조건 X)를 넣어준다.
                         respMsgs.push("<li id = 'red'>", validatorList[i].respMsg, "<span > (조건 X) </span></li>");
                         //콘솔창에 찍어주기
                         console.log(i+1,validatorList[i].respMsg,false);
@@ -140,7 +142,7 @@
                     
                     // 맞을 경우
                     else {
-                        //틀리지 않으니 기준만 넣어준다.
+                        //틀리지 않으니 기준 설명만 넣어준다.
                         respMsgs.push("<li>", validatorList[i].respMsg, "</li>"); 
                         //콘솔창에 찍어주기
                         console.log(i+1,validatorList[i].respMsg,true); 
@@ -152,10 +154,10 @@
                 // 윈도우 창에 표현
                 document.getElementById("rule").innerHTML = respMsgsToText;
                     
-                // 실행이 된 후 커서를 일단 인풋 창으로 다시 보낸다
+                // 커서를 인풋 창으로 다시 보낸다
                 idInput.focus();
                 
-                // 다 맞으면 원안대로, 한개라도 틀렸으면 "사용이 불가능한 아이디입니다"가 msgTxt에 찍혀 있을 것이고 이걸 표현해 준다.
+                // 다 맞으면 원안대로, 한 개라도 틀렸으면 "사용이 불가능한 아이디입니다"가 msgTxt에 찍혀 있을 것이고 이걸 표현해 준다.
                 document.querySelector("p").innerHTML = msgTxt;
                 
                 return false;
@@ -164,16 +166,20 @@
             
             // 초기화
             const initialization = () => {
-            checkUserId("afafafaf")
+                // 정상 입력
+                checkUserId("afafafaf")
 
-            document.querySelector("#rule").style.color = "black"; 
+                // 초기화는 검은색으로
+                document.querySelector("#rule").style.color = "black"; 
 
-            // 콘솔창 깨끗하게
-            console.clear();
+                // 콘솔창 깨끗하게
+                console.clear();
 
-            // 답변부분 깨끗하게
-            document.querySelector("p").innerHTML =""
+                // 답변부분 깨끗하게
+                document.querySelector("p").innerHTML =""
             }
+
+            // 초기화 실행
             initialization(); 
         </script>
     </body>
