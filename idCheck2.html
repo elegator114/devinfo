@@ -19,16 +19,14 @@
 
             p{margin-top: 5px;}
 
-            
         </style>
         <title>추가학습자료</title>
+        
     </head>
     <body>
         <div id="wrap">
             <h1>아이디 검사</h1>
             
-            
-        
             <label for="userId">아이디</label>
       
             <input type="text" size=20 minlength="5" maxlength="15" id="userId" name="userId" required placeholder=" 입력해 주세요 ">
@@ -121,6 +119,7 @@
                 for (let i = 0; i < validatorList.length; i++) {
           
                     if(validatorList[i].validator) {
+
                     // 틀릴 경우
                         //틀렸으니... id = red, 기준을 설명하는 문장, (조건 X)를 넣어준다.
                         respMsgs.push("<li id = 'red'>", validatorList[i].respMsg, "<span > (조건 X) </span></li>");
@@ -129,7 +128,6 @@
                         //틀렸으니 메시지와 색상을 바꿔준다.
                         msgTxt = "사용이 불가능한 아이디입니다"
                         document.querySelector("p").style.color = "purple";
-                        
                     }
                     
                     // 맞을 경우
@@ -155,8 +153,10 @@
             }
             //모두 적합한 상태로 화면에 한번 뿌려준다
             checkUserId("afafafaf")
+
             //콘솔창 깨끗하게
             console.clear();
+
             //답변부분을 깨끗하게
             document.querySelector("p").innerHTML =""
         </script>
