@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
-            *{margin:0;padding:0;}
+            *{margin:0;padding:0; background-color: white;}
 
             #wrap{display: block;margin:30px auto; width:100%; max-width:70%;}
 
@@ -75,7 +75,7 @@
                 //기본값은 다 적합한 경우로 정하기로...
                 let msgTxt= "사용가능한 아이디입니다.";
                 document.querySelector("p").style.color = "green";
-                
+                document.querySelector("#rule").style.color = "green"; 
                 //정규식과 메시지를 선언, 정규식은 변수로 저장하기 까다로와서 여기 함수 내부에서 다루는 것으로...
                 const validatorList = [
                 
@@ -154,6 +154,8 @@
             }
             //모두 적합한 상태로 화면에 한번 뿌려준다. 초기화!
             checkUserId("afafafaf")
+
+            document.querySelector("#rule").style.color = "black"; 
 
             // 콘솔창 깨끗하게
             console.clear();
