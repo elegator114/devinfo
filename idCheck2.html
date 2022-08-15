@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<htmllang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            *{margin:0;padding:0;}
+
+            #wrap{display: block;margin:30px auto; width:100%; max-width:70%;}
+
+            #red{color:red}
+
+            h2{margin-top:10px;}
+
+            ul{margin:10px 0 10px 15px; }
+
+            li{line-height: 1.5rem;}
+
+            p{margin-top: 5px;}
+
+            
+        </style>
+        <title>추가학습자료</title>
+    </head>
+    <body>
+        <div id="wrap">
+            <h1>아이디 검사</h1>
+            
+            
+        
+            <label for="userId">아이디</label>
+      
+            <input type="text" size=20 minlength="5" maxlength="15" id="userId" name="userId" required placeholder=" 입력해 주세요 ">
+            
+            <!-- 엔터키 사용 위해 버튼과 인풋 연결은 아래에 함수로 함 -->
+            <button type="button">아이디 확인</button>
+           
+            <p></p>
+
+            <h2>작성규칙</h2>
+            <ol id="rule"></ol>
+        </div>
+        <script>
+            // id = "userId" 인풋의 속성까지 저장한다 따라서 userId.minlength를 변수로 가져올 수 있다.
+            const idInput = document.getElementById("userId");  
+            
+            // button 클릭될 경우에 submitId 실행
+            document.querySelector("button").addEventListener('click',() => {
+                submitId();
+            });
+            
+            //키보드 이벤트 엔터가 입력될 경우에 submitId 실행
+            idInput.addEventListener('keyup', () => {
+
+                //키보드 이벤트 엔터 조건문
+                if ( event.keyCode === 13) { 
+                    submitId();
+                } 
+            });
+
+            //입력이 완성될 경우에 체크 실행
+            const submitId = () => {
+
+                //입력된 값을 userId에 담아 둔다
+                userId = idInput.value;
+                
+                //콘솔창에 아이디 적어준다.
+                console.log(userId);
+
+                //checkUserId 실행하기
+                checkUserId(userId); 
+            }
+            // 각각의 내용을 확인하기
+            const checkUserId = (userId) => {
+
+                //기본값은 다 적합한 경우로 정하기로...
+                let msgTxt= "사용가능한 아이디입니다.";
+                document.querySelector("p").style.color = "green";
+                
+                //정규식과 메시지를 선언, 정규식은 변수로 저장하기 까다로와서 여기 함수 내부에서 다루는 것으로...
+                const validatorList = [
+                
+                    {
+                        validator : userId === "",
+                        respMsg : "내용을 입력해 주세요"
+                    },
+                    {
+                        validator : userId.length < idInput.minLength || userId.length > idInput.maxLength,
+                        respMsg : "5 ~ 15자 이내의 아이디로 입력해 주세요."
+                    },
+                    {
+                        validator : /\s/g.test(userId),
+                        respMsg : "[SPACE BAR] 공백은 허용되지 않습니다."
+                    },
+                    {// 허용 범위 : a-z,0-9, "_", "." , [space bar]
+                        validator : !/^[a-z0-9_?\.?\ ?]{1,15}$/g.test(userId),
+                        respMsg : "알파벳 소문자, 숫자, 밑줄(_), 마침표(.)만 사용할 수 있습니다"
+                    },
+                    {
+                        validator : /_{2}/g.test(userId),
+                        respMsg : "밑줄(_)은 연속해서 2개이상 사용할 수 없습니다."
+                    },
+                    {
+                        validator : userId.split(/\./g).length - 1 > 1,
+                        respMsg : "마침표는 최대 1개만 사용할 수 있습니다."
+                    },
+                    {
+                        validator : !/[a-z]/.test(userId.slice(0,1)),
+                        respMsg : "아이디 시작 문자는 영문 소문자로 입력해주세요."
+                    },
+                    {
+                        validator : !/[a-z]/.test(userId.slice(-1)) && !/[0-9]/.test(userId.slice(-1)),
+                        respMsg : "아이디 마지막 문자는 영문 소문자 혹은 숫자로 입력해주세요."
+                    },
+                ];
+                
+                // 배열 선언
+                let respMsgs = []
+                // 본격적인 체크
+                for (let i = 0; i < validatorList.length; i++) {
+          
+                    if(validatorList[i].validator) {
+                    // 틀릴 경우
+                        //틀렸으니... id = red, 기준을 설명하는 문장, (조건 X)를 넣어준다.
+                        respMsgs.push("<li id = 'red'>", validatorList[i].respMsg, "<span > (조건 X) </span></li>");
+                        //콘솔창에 찍어주기
+                        console.log(i+1,validatorList[i].respMsg,false);
+                        //틀렸으니 메시지와 색상을 바꿔준다.
+                        msgTxt = "사용이 불가능한 아이디입니다"
+                        document.querySelector("p").style.color = "purple";
+                        
+                    }
+                    
+                    // 맞을 경우
+                    else {
+                        //틀리지 않으니 기준만 넣어준다.
+                        respMsgs.push("<li>", validatorList[i].respMsg, "</li>"); 
+                        //콘솔창에 찍어주기
+                        console.log(i+1,validatorList[i].respMsg,true); 
+                    }
+                    // 합치기
+                    respMsgsToText = respMsgs.join("")
+                    
+                    // 윈도우 창에 표현
+                    document.getElementById("rule").innerHTML = respMsgsToText;
+                    
+                    //실행이 된 후 커서를 일단 인풋 창으로 다시 보낸다
+                    idInput.focus();
+                }
+                //다 맞으면 원안대로, 한개라도 틀렸으면 "사용이 불가능한 아이디입니다"가 msgTxt에 찍혀 있을 것이고 이걸 표현해 준다.
+                document.querySelector("p").innerHTML = msgTxt;
+                
+                return false;
+            }
+            //모두 적합한 상태로 화면에 한번 뿌려준다
+            checkUserId("afafafaf")
+            //콘솔창 깨끗하게
+            console.clear();
+            //답변부분을 깨끗하게
+            document.querySelector("p").innerHTML =""
+        </script>
+    </body>
+</html>
