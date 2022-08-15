@@ -63,15 +63,23 @@
                 //입력된 값을 userId에 담아 둔다
                 userId = idInput.value;
                 
-                //콘솔창에 아이디 적어준다.
-                console.log(userId);
+                // 내용 없으면 초기화 하고 멈춤
+                if(userId.length == 0) {
+                    
+                    initialization();
+                    return false;
+                }
 
                 //checkUserId 실행하기
                 checkUserId(userId); 
+                
             }
             // 각각의 내용을 확인하기
             const checkUserId = (userId) => {
-
+                // 콘솔창 깨끗하게
+                console.clear();
+                //콘솔창에 아이디 적어준다.
+                console.log("idTyped :",userId);
                 //기본값은 다 적합한 경우로 정하기로...
                 let msgTxt= "사용가능한 아이디입니다.";
                 document.querySelector("p").style.color = "green";
@@ -152,7 +160,10 @@
                 
                 return false;
             }
-            //모두 적합한 상태로 화면에 한번 뿌려준다. 초기화!
+            // 모두 적합한 상태로 화면에 한번 뿌려준다. 초기화!
+            
+            // 초기화
+            const initialization = () => {
             checkUserId("afafafaf")
 
             document.querySelector("#rule").style.color = "black"; 
@@ -162,6 +173,8 @@
 
             // 답변부분 깨끗하게
             document.querySelector("p").innerHTML =""
+            }
+            initialization(); 
         </script>
     </body>
 </html>
