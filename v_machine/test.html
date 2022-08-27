@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <br />
+    <div class="col-sm-12 p-3">
+      <!-- 사용자  -->
+      <label
+        ><select
+          class="form-select form-select-lg mb-3"
+          id="customers"
+        ></select>
+      </label>
+      <input
+        class="number"
+        style="height: 49px"
+        type="text"
+        name=""
+        id="total_customer_amount"
+        value="10000"
+        readonly
+      />
+      <br />
+      <br />
+
+      <div id="divCoins"></div>
+      <br />
+
+      <label>total_machine_amount</label
+      ><input
+        type="text"
+        name=""
+        id="total_machine_amount"
+        value="0"
+        readonly
+      />
+    </div>
+
+    <div>
+      <div class="col-sm-12 p-2" id="divDrinks"></div>
+    </div>
+    <br />
+
+    <div
+      id="output"
+      style="
+        width: 100%;
+        height: 150px;
+        overflow-y: auto;
+        border: 2px solid #222;
+      "
+    ></div>
+    <script src="./js/common.js"></script>
+    <script>
+      let total_customer_amount = 10000;
+      let total_machine_amount = 0;
+
+      const drinks = [
+        {
+          drinkId: "1",
+          drinkName: "코카콜라",
+          price: 700,
+          stock: 5,
+        },
+        {
+          drinkId: "2",
+          drinkName: "오렌지주스",
+          price: 1200,
+          stock: 5,
+        },
+        {
+          drinkId: "3",
+          drinkName: "커피",
+          price: 500,
+          stock: 5,
+        },
+        {
+          drinkId: "4",
+          drinkName: "물",
+          price: 700,
+          stock: 5,
+        },
+        {
+          drinkId: "5",
+          drinkName: "옥수수수염차",
+          price: 1200,
+          stock: 5,
+        },
+        {
+          drinkId: "6",
+          drinkName: "밀키스",
+          price: 700,
+          stock: 5,
+        },
+        {
+          drinkId: "7",
+          drinkName: "트래비",
+          price: 1000,
+          stock: 5,
+        },
+      ];
+
+      /**
+       * 동전 버튼을 클릭할 때 마다 투입한 금액 처리 함수
+       * @param {Number} amount
+       */
+      function inputAmount(amount) {
+        var output = document.getElementById("output");
+        if (amount <= total_customer_amount) {
+          //고객 지갑에 투입하려는 금액만큼 있는지 체크
+          total_machine_amount += amount;
+          total_customer_amount -= amount;
+          //total_vending_amount += amount;
+
+          for (var drink of drinks) {
+            if (drink.price <= total_machine_amount) {
+              document
+                .getElementById("btnDrink" + drink.drinkId)
+                .classList.remove("btn-secondary");
+              document
+                .getElementById("btnDrink" + drink.drinkId)
+                .classList.add("btn-primary");
+            }
+          }
+
+          document.getElementById("total_machine_amount").value =
+            total_machine_amount;
+          document.getElementById("total_customer_amount").value =
+            total_customer_amount;
+          //   document.getElementById("total_vending_amount").value =
+          //     total_vending_amount;
+
+          output.insertAdjacentHTML(
+            "beforeend",
+            `<p>${amount}이 투입되었습니다.</p>`
+          );
+          output.insertAdjacentHTML(
+            "beforeend",
+            `<p>총 투입 금액은 ${total_machine_amount}입니다.</p>`
+          );
+          output.insertAdjacentHTML(
+            "beforeend",
+            `<p>당신의 지갑에는 ${total_customer_amount}이 남아 있습니다.</p>`
+          );
+        } else {
+          output.insertAdjacentHTML(
+            "beforeend",
+            `<p>내 지갑에 남아 있는 돈이 ${total_customer_amount} 입니다.</p>`
+          );
+          //   output.insertAdjacentHTML(
+          //     "beforeend",
+          //     `<p>${amount}를 투입할 수 없습니다.</p>`
+          //   );
+        }
+        output.scrollTop = output.scrollHeight;
+      }
+
+      /**
+       * 음료 버튼을 클릭하면, 음료 구매가 가능한지 확인하는 함수
+       * @param {Number} drinkId
+       */
+      let changes;
+
+      function requestDrink(drinkId) {
+        var output = document.getElementById("output");
+        let drink = drinks.filter((d) => d.drinkId == drinkId)[0];
+        // -> 행열의 몇번째 object인지 찾아냄. 그런데 왜 [0]인가?
+        if (drink.stock > 0) {
+          //->재고가 있으면
+          if (total_machine_amount >= drink.price) {
+            let changes = total_machine_amount - drink.price;
+            output.insertAdjacentHTML(
+              "beforeend",
+              `<p>${drink.drinkName} 음료가 나왔습니다. 잔돈은 ${changes}입니다.</p>`
+            );
+
+            total_machine_amount -= drink.price;
+            drink.stock -= 1;
+
+            document.getElementById("total_machine_amount").value =
+              total_machine_amount;
+
+            document.getElementById("drink_stock" + drinkId).innerText =
+              drink.stock;
+
+            for (var drinkn of drinks) {
+              if (drinkn.price > total_machine_amount) {
+                document
+                  .getElementById("btnDrink" + drinkn.drinkId)
+                  .classList.remove("btn-primary");
+                document
+                  .getElementById("btnDrink" + drinkn.drinkId)
+                  .classList.add("btn-secondary");
+              }
+            }
+            for (var drinkn of drinks) {
+              if (drinkn.stock == 0) {
+                document
+                  .getElementById("btnDrink" + drinkn.drinkId)
+                  .classList.remove("btn-primary");
+                document
+                  .getElementById("btnDrink" + drinkn.drinkId)
+                  .classList.add("btn-warning");
+              }
+            }
+          } else {
+            output.insertAdjacentHTML(
+              "beforeend",
+              `<p>음료자판기에 잔돈이 없어서 ${drink.drinkName} 음료를 구매할 수 없습니다.</p>`
+            );
+          }
+        } else {
+          output.insertAdjacentHTML(
+            "beforeend",
+            `<p>${drink.drinkName}의 재고가 부족합니다</p>`
+          );
+        }
+
+        output.scrollTop = output.scrollHeight;
+      }
+
+      /**
+       * 동전 버튼을 화면에 출력하는 함수
+       */
+      function renderCoins() {
+        const coins = [100, 500, 1000];
+        const h = [];
+        for (const coin of coins) {
+          h.push(
+            `<button onclick="inputAmount(${coin});" class="coin">${coin}원 투입</button>`
+          );
+        }
+
+        document.getElementById("divCoins").innerHTML = h.join("");
+      }
+
+      /**
+       * 음료 버튼을 화면에 출력하는 함수
+       */
+      function renderDrinks() {
+        const h = [];
+        for (const drink of drinks) {
+          h.push(
+            `<button style = "height: 150px;" onclick="requestDrink(${drink.drinkId});" id="btnDrink${drink.drinkId}" class="drink btn btn-secondary col-2 m-1 "><div  style ="height:50px" class="border-bottom">${drink.drinkName}</div><div >${drink.price}원</br>재고수: <span id="drink_stock${drink.drinkId}">${drink.stock}</span></div></button>`
+          );
+        }
+
+        document.getElementById("divDrinks").innerHTML = h.join("");
+      }
+      //
+      //
+      //
+      //
+      //
+      let sCustomer = [];
+
+      async function doSearch() {
+        let resource = "http://localhost:3000/customers";
+
+        const res = await fetch(resource);
+        const resJson = await res.json();
+        console.log(resJson);
+        sCustomer = resJson;
+        renderTable(resJson);
+      } //->doSearch() 마감
+
+      function renderTable(customers) {
+        const h = [];
+        for (const customer of customers) {
+          h.push(
+            `<option value="${customer.id}">[${customer.name}]의 자산 : ${customer.amount}</option>`
+          );
+        }
+
+        document.querySelector("#customers").innerHTML = h.join("");
+      }
+
+      window.addEventListener("load", function () {
+        renderCoins();
+        renderDrinks();
+        doSearch();
+      });
+    </script>
+  </body>
+</html>

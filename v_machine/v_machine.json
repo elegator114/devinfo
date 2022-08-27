@@ -1,0 +1,31 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "이용자1",
+      "amount": 11111
+    },
+    {
+      "id": 1,
+      "name": "이용자2",
+      "amount": 22222
+    },
+    {
+      "id": 1,
+      "name": "이용자3",
+      "amount": 33333
+    },
+    {
+      "id": 1,
+      "name": "이용자4",
+      "amount": 44444
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ]
+}
